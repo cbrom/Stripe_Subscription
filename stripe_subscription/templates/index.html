@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block scripts %} 
+<script src="https://js.stripe.com/v3/"></script> 
+<script src="{% static 'main.js' %}"></script> 
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <p><strong>Dear {{ user.username }}, glad to have you here!</strong></p>
+    <p>You can cancel your subscription or Subscribe back on this page!</p>
+
+    <div class="container mt-5">
+        {% if subscription.status == "trialing" %}
+          <h4>Your subscription:</h4>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">
+                {{ product.description }}
+              </p>
+              <p class="card-text">
+                Your trial ends at {{ subscription.trial_end }}
+              </p>
+              <button type="submit" class="btn btn-primary" id="cancButton">Cancel Subscrption</button>
+              
+            </div>
+          </div>
+        {% elif subscription.status == "canceled" %}
+          <h4>Your subscription:</h4>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">
+                {{ product.description }}
+              </p>
+              <p class="card-text">
+                Your subscription is cancelled, please subscribe to continue!
+              </p>
+              <button type="submit" class="btn btn-primary" id="subButton">Subscribe</button>
+            </div>
+          </div>
+        {% else %}
+          <button type="submit" class="btn btn-primary" id="subButton">Subscribe</button>
+          {{stripe_customer}}
+        {% endif %}
+      </div>
+
+{% else %}
+    <p>You can <a href="{% url 'django_registration_register' %}">sign up here</a> to get a notification email for each new challenge</p>
+{% endif %}
+{% endblock %}

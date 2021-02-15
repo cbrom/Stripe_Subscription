@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load staticfiles %}
+{% block scripts %} 
+<script src="https://js.stripe.com/v3/"></script> 
+<script src="{% static 'subscribe.js' %}"></script> 
+{% endblock %}
+
+{% block content %}
+<p>{% trans "Loading stripe subscription..." %}</p>
+{% endblock %}
